@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || 'Expense Splitter' %></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1><%= title || 'Expense Splitter' %></h1>
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <a href="/add-expense" class="btn-primary">+ Add Expense</a>
+    </div>
+
+    <% if (settlement && settlement.length > 0) { %>
+      <h2>Settlement Plan</h2>
+      <p style="margin-bottom: 1rem; color: #666;">
+        Minimum transactions to settle all debts:
+      </p>
+      <div class="settlement-list">
+        <% settlement.forEach(transaction => { %>
+          <div class="settlement-item">
+            <strong><%= transaction.from %></strong> owes
+            <strong><%= transaction.to %></strong>
+            <span class="settlement-amount">$<%= transaction.amount.toFixed(2) %></span>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <h2>House Members</h2>
+    <% if (users && users.length > 0) { %>
+      <div class="members-list">
+        <% users.forEach(user => { %>
+          <div class="member-card">
+            <strong><%= user.name %></strong> (ID: <%= user.id %>)
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">No house members found.</div>
+    <% } %>
+
+    <h2>Expense History</h2>
+    <% if (expenses && expenses.length > 0) { %>
+      <table class="expense-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Paid By</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% expenses.forEach(expense => { %>
+            <tr>
+              <td><%= expense.id %></td>
+              <td><%= expense.description %></td>
+              <td class="amount">$<%= parseFloat(expense.total_amount).toFixed(2) %></td>
+              <td><%= expense.paid_by_user_id %></td>
+              <td class="date"><%= expense.date %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="empty-state">No expenses recorded yet.</div>
+    <% } %>
+  </div>
+</body>
+</html>
