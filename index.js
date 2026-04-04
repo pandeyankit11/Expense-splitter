@@ -37,6 +37,32 @@ app.get('/', async (req, res) => {
   }
 });
 
+// Add user form - GET route
+app.get('/add-user', async (req, res) => {
+  res.render('add-user', { title: 'Add User' });
+});
+
+// Add user - POST route
+app.post('/add-user', async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    if (!name || name.trim() === '') {
+      return res.status(400).send('Name is required');
+    }
+
+    await db.query(
+      'INSERT INTO users (name) VALUES ($1)',
+      [name.trim()]
+    );
+
+    res.redirect('/');
+  } catch (error) {
+    console.error('Error adding user:', error);
+    res.status(500).send('Failed to add user');
+  }
+});
+
 // Add expense form - GET route
 app.get('/add-expense', async (req, res) => {
   try {
