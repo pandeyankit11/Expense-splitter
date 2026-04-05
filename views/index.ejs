@@ -24,7 +24,7 @@
           <div class="settlement-item">
             <strong><%= transaction.from %></strong> owes
             <strong><%= transaction.to %></strong>
-            <span class="settlement-amount">$<%= transaction.amount.toFixed(2) %></span>
+            <span class="settlement-amount">₹ <%= transaction.amount.toFixed(2) %></span>
           </div>
         <% }) %>
       </div>
@@ -35,7 +35,7 @@
       <div class="members-list">
         <% users.forEach(user => { %>
           <div class="member-card">
-            <strong><%= user.name %></strong> (ID: <%= user.id %>)
+            <strong><%= user.name %></strong> 
           </div>
         <% }) %>
       </div>
@@ -60,8 +60,8 @@
             <tr>
               <td><%= expense.id %></td>
               <td><%= expense.description %></td>
-              <td class="amount">$<%= parseFloat(expense.total_amount).toFixed(2) %></td>
-              <td><%= expense.paid_by_user_id %></td>
+              <td class="amount">₹ <%= parseFloat(expense.total_amount).toFixed(2) %></td>
+              <td><%= users.find(u => u.id === expense.paid_by_user_id)?.name || 'Unknown User' %></td>
               <td class="date"><%= expense.date %></td>
             </tr>
           <% }) %>
