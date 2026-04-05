@@ -116,6 +116,7 @@ app.post('/add-expense', async (req, res) => {
     } catch (transactionError) {
       // Rollback on any error
       await db.query('ROLLBACK');
+      console.log('Transaction error:', transactionError);
       throw transactionError;
     }
   } catch (error) {
