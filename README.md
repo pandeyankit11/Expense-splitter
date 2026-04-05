@@ -44,7 +44,7 @@ All expense insertions use PostgreSQL transactions (`BEGIN` / `COMMIT` / `ROLLBA
 npm install
 
 # Create environment configuration
-cp .env.example .env
+cp .env .env
 # Edit .env with your PostgreSQL credentials
 
 # Set up database schema
