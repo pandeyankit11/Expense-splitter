@@ -5,7 +5,7 @@ dotenv.config();
 
 const { Pool } = pg;
 
-const pool = new Pool({
+const db = new Pool({
   host: process.env.DB_HOST || '10.30.67.122',
   port: process.env.DB_PORT || 5432,
   database: process.env.DB_NAME || 'expense_splitter_db',
@@ -16,4 +16,4 @@ const pool = new Pool({
   connectionTimeoutMillis: 2000,
 });
 
-export { pool as db };
+export { db };
