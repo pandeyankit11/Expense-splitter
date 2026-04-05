@@ -14,7 +14,7 @@ A full-stack web application for tracking shared expenses and automatically calc
 
 ### Relational Database Design
 A normalized PostgreSQL schema with three properly related tables:
-- `users` - House members
+- `users` - Group members
 - `expenses` - Individual expense records with payer reference
 - `expense_splits` - Many-to-many relationship tracking how each expense is divided among users
 
