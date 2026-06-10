@@ -7,7 +7,7 @@ import { calculateSettlement } from './services/settlement.js';
 
 const prisma = new PrismaClient();
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Serve static files from /public
 app.use(express.static('public'));
@@ -161,7 +161,7 @@ app.post('/delete-expense/:id', async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// Start the server (0.0.0.0 allows external cloud connections)
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
