@@ -1,0 +1,55 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Assuming you are using PostgreSQL based on the 'SERIAL' keyword in your SQL
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  expensesPaid Expense[]      @relation("UserExpenses")
+  expenseSplits ExpenseSplit[]
+  
+  @@map("users") // Maps this Prisma model to the existing "users" table
+}
+
+model Expense {
+  id            Int      @id @default(autoincrement())
+  paidByUserId  Int      @map("paid_by_user_id")
+  description   String
+  totalAmount   Decimal  @db.Decimal(10, 2) @map("total_amount")
+  date          DateTime @db.Date
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  paidBy        User           @relation("UserExpenses", fields: [paidByUserId], references: [id], onDelete: Cascade)
+  splits        ExpenseSplit[]
+
+  @@map("expenses") // Maps this Prisma model to the existing "expenses" table
+}
+
+model ExpenseSplit {
+  id          Int      @id @default(autoincrement())
+  expenseId   Int      @map("expense_id")
+  userId      Int      @map("user_id")
+  amountOwed  Decimal  @db.Decimal(10, 2) @map("amount_owed")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  // Relations
+  expense     Expense  @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Enforces the unique constraint from your SQL
+  @@unique([expenseId, userId])
+  
+  @@map("expense_splits") // Maps this Prisma model to the existing "expense_splits" table
+}
