@@ -161,6 +161,20 @@ app.post('/delete-expense/:id', async (req, res) => {
   }
 });
 
+// POST: Reset all expenses (Start a new trip)
+app.post('/reset', async (req, res) => {
+  try {
+    // This single command wipes the expenses, and your cascading setup wipes the splits automatically!
+    await prisma.expense.deleteMany({});
+    
+    // Redirect back to the now-empty dashboard
+    res.redirect('/');
+  } catch (error) {
+    console.error('Error resetting database:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // Start the server (0.0.0.0 allows external cloud connections)
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
