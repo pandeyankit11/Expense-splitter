@@ -161,13 +161,16 @@ app.post('/delete-expense/:id', async (req, res) => {
   }
 });
 
-// POST: Reset all expenses (Start a new trip)
+// POST: Nuclear Reset (Wipe Expenses AND Users)
 app.post('/reset', async (req, res) => {
   try {
-    // This single command wipes the expenses, and your cascading setup wipes the splits automatically!
+    // 1. Delete all expenses first (this cascades and deletes all splits)
     await prisma.expense.deleteMany({});
     
-    // Redirect back to the now-empty dashboard
+    // 2. Now that expenses are gone, safely delete all users
+    await prisma.user.deleteMany({});
+    
+    // Redirect back to the completely empty dashboard
     res.redirect('/');
   } catch (error) {
     console.error('Error resetting database:', error);
